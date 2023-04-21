@@ -1,0 +1,59 @@
+# {{ project_title }}
+
+[![pipeline status](https://{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}/badges/main/pipeline.svg?ignore_skipped=true)](https://{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}/-/commits/main)
+[![python](https://img.shields.io/badge/Python-{{ python_version }}-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+
+{{ project_description }}
+
+## Requirements
+
+* Python {{ python_version }} or higher
+* [Poetry](https://python-poetry.org/docs/#installation)
+
+## Installation
+
+1. Clone the repository
+
+    ```bash
+    git clone https://{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}.git && cd {{ project_name }}
+    ```
+
+2. [Optional] Configure poetry to create virtual environments inside the project's root directory (needed for debugging in vscode)
+
+    ```bash
+    poetry config virtualenvs.in-project true
+    ```
+
+3. Create local virtual environment and install dependencies:
+
+    ```bash
+    invoke install
+    ```
+
+4. Activate virtual environment
+
+    ```bash
+    poetry shell
+    ```
+
+5. Install Git pre-commit hooks
+
+    ```bash
+    invoke pre-commit-install
+    ```
+
+6. Set all the mandatory environment variables
+
+    ```bash
+    export DEVICE_PASSWORD=supersecret
+    export NAUTOBOT_TOKEN=123abcdef
+    ```
+
+7. Run the script
+
+    ```bash
+    {{ project_name }}
+    ```

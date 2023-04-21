@@ -1,0 +1,90 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "{{ python_package_distribution_name }}"
+version = "0.1.0"
+description = "{{ project_description }}"
+authors = ["{{ author_fullname }} <{{ author_email }}>"]
+license = "{{ copyright_license }}"
+readme = "README.md"
+repository = "https://{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}"
+homepage = "https://{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}"
+keywords = []
+packages = [ { include = "{{ python_package_import_name }}", from = "src" } ]
+
+[tool.poetry.dependencies]
+python = "^{{python_version}},<4.0"
+
+typer = {extras = ["all"], version = "^0.7.0"}
+rich = "^12.0.0"
+pydantic = "^1.10.7"
+nornir = "^3.3.0"
+nornir_nautobot = "^2.3.0"
+netmiko = "^4.1.2"
+
+[tool.poetry.dev-dependencies]
+# formatting, quality, tests
+black = "^23.3.0"
+isort = {extras = ["colors"], version = "^5.12.0"}
+mypy = "^1"
+pytest = "^7.3.0"
+pytest-cov = "^4.0.0"
+pre-commit = "^3.2.2"
+
+# tasks
+invoke = "^2.0.0"
+commitizen = "^2.42.1"
+
+# flake8 plugins
+flake8 = "^6.0.0"
+# Flake8 plug-in loading the configuration from pyproject.toml
+Flake8-pyproject = "^1.2.3"
+# Automated security testing with bandit and flake8.
+flake8-bandit = "^4.1.1"
+# flake8 plugin to call black as a code style validator.
+flake8-black = "^0.3.6"
+# Check for python builtins being used as variables or parameters.
+flake8-builtins = "^2.1.0"
+# A flake8 plugin to help you write better list/set/dict comprehensions.
+flake8-comprehensions = "^3.11.1"
+# Extension for flake8 which uses pydocstyle to check docstrings. 
+flake8-docstrings = "^1.7.0"
+# A flake8 plugin checking common style issues or inconsistencies with pytest-based tests.
+flake8-pytest-style = "^1.7.2"
+# A flake8 plugin that helps you write tidier imports.
+flake8-tidy-imports = "^4.8.0"
+# Check PEP-8 naming conventions, plugin for flake8
+pep8-naming = "^0.13.3"
+
+[tool.poetry.scripts]
+{{ python_package_command_line_name }} = "{{ python_package_import_name }}.cli:main"
+
+[tool.flake8]
+max-line-length = {{ line_length }}
+per-file-ignores = """
+    tests/*: S101
+"""
+
+[tool.black]
+line-length = {{ line_length }}
+exclude = "tests/fixtures"
+
+[tool.isort]
+line_length = {{ line_length }}
+multi_line_output = 3
+force_single_line = false
+balanced_wrapping = true
+default_section = "THIRDPARTY"
+known_first_party = "{{ python_package_import_name }}"
+include_trailing_comma = true
+
+[tool.commitizen]
+bump_message = "bump(release): $current_version → $new_version"
+tag_format = "$version"
+update_changelog_on_bump = true
+# Make sure that the version here and in [tool.poetry] section are the same before bumping.
+# Otherwise, bump will update only the version here.
+version = "0.1.0"
+version_files = ["pyproject.toml:^version"]

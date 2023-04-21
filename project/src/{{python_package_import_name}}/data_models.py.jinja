@@ -1,0 +1,23 @@
+"""
+Data models for {{ python_package_import_name }}.
+
+This module contains the pydantic data models to parse and validate
+data from external sources, such as APIs and network devices.
+"""
+
+from typing import Optional
+
+from pydantic import BaseModel
+
+
+# Example model
+class Device(BaseModel):
+    """Device model."""
+
+    hostname: str
+    ip: str
+    vendor: str
+    model: str
+    os: str
+    version: str
+    serial: Optional[str]

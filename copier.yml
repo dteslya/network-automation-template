@@ -1,0 +1,88 @@
+# Config
+_subdirectory: project
+
+# Questions
+author_fullname:
+  type: str
+  help: Your full name
+
+author_email:
+  type: str
+  help: Your email
+
+project_name:
+  type: str
+  help: Name of your project (lowercase, hyphens like 'awesome-automation-project')
+
+project_title:
+  type: str
+  help: Title of your project (title case like 'Awesome Automation Project')
+  default: "{{project_name | title | replace('-', ' ')}}"
+
+project_description:
+  type: str
+  help: Project description
+  default: "Super awesome automation project."
+
+gitlab_url:
+  type: str
+  help: FQDN of your self-hosted Gitlab instance (e.g., gitlab.example.com)
+  default: "gitlab.example.com"
+
+repository_namespace:
+  type: str
+  help: Your repository namespace (can be a Gitlab group or user name)
+  default: "{{ author_email.split('@')[0] }}"
+
+copyright_holder:
+  type: str
+  help: The name of the person/entity holding the copyright
+  default: "{{ author_fullname }}"
+
+copyright_holder_email:
+  type: str
+  help: The email of the person/entity holding the copyright
+  default: "{{ author_email }}"
+
+copyright_date:
+  type: str
+  help: The copyright date
+  default: "2023"
+
+copyright_license:
+  type: str
+  help: Your project's license
+  default: Apache License 2.0
+  choices:
+  - Apache License 2.0
+  - GNU General Public License v3.0
+  - MIT License
+
+python_package_distribution_name:
+  type: str
+  help: Your Python package distribution name (for `pip install NAME`)
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+python_package_import_name:
+  type: str
+  help: Your Python package import name (for `import NAME` in Python code)
+  default: "{{ project_name|lower|replace('-', '_')|replace(' ', '_') }}"
+
+python_package_command_line_name:
+  type: str
+  help: Your CLI name if any (for use in the shell)
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+python_version:
+  type: str
+  help: Python version
+  choices:
+    - "3.11"
+    - "3.10"
+    - "3.9"
+  default: "3.11"
+
+line_length:
+  type: int
+  help: Maximum line length (used by linters and formatters)
+  default: 99

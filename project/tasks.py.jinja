@@ -1,0 +1,77 @@
+"""Invoke tasks."""
+
+from invoke import task
+
+
+def export_requirements(c):
+    """Export requirements helper function."""
+    c.run("poetry export -f requirements.txt --output requirements.txt --without-hashes")
+    c.run(
+        "poetry export -f requirements.txt --output requirements-dev.txt \
+            --without-hashes --only dev"
+    )
+
+
+@task
+def install(c):
+    """Install dependencies."""
+    c.run("poetry install")
+    export_requirements(c)
+
+
+@task
+def update(c):
+    """Update dependencies."""
+    c.run("poetry update")
+    export_requirements(c)
+
+
+@task
+def show_outdated(c):
+    """Show outdated top-level dependencies."""
+    cmd = "poetry show --outdated | \
+            grep --file=<(poetry show --tree \
+            | grep '^\w' | cut -d' ' -f1 | sed 's/.*/^&\\\s/')"  # noqa: W605
+    c.run(cmd)
+
+
+@task
+def pre_commit_install(c):
+    """Install pre-commit hooks."""
+    c.run("poetry run pre-commit install")
+
+
+@task
+def pre_commit_update(c):
+    """Update pre-commit hooks."""
+    c.run("poetry run pre-commit autoupdate")
+
+
+@task
+def codestyle(c):
+    """Run formatters and linters."""
+    c.run("black src tests")
+    c.run("isort src")
+    c.run("flake8 -v src tests")
+    c.run("mypy src tests")
+
+
+@task
+def pre_commit_run(c):
+    """Run pre-commit hooks."""
+    c.run("poetry run pre-commit run --all-files")
+
+
+@task
+def test(c):
+    """Run tests."""
+    c.run("poetry run pytest")
+
+
+@task
+def docker_build(c):
+    """Build docker image."""
+    c.run(
+        "docker build -t {{ project_name }}:`git rev-parse --short HEAD` \
+        -t '{{ project_name }}:latest' -f docker/Dockerfile ."
+    )

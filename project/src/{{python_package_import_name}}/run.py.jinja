@@ -1,0 +1,15 @@
+"""Example module."""
+
+from {{ python_package_import_name }}.logger import get_logger
+from {{ python_package_import_name }}.settings import Settings
+
+logger = get_logger()
+
+settings = Settings()
+
+DEVICE_USERNAME = settings.DEVICE_USERNAME
+
+
+def hello_world() -> None:
+    """Print DEVICE_USERNAME value."""
+    logger.info(f"The default username used to connect to network devices is {DEVICE_USERNAME}")

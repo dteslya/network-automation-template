@@ -1,0 +1,29 @@
+"""Settings for {{ python_package_import_name }}."""
+
+from os import environ
+
+from pydantic import BaseSettings
+
+
+class Settings(BaseSettings):
+    """Settings for {{ python_package_import_name }}.
+
+    Environment variables must also be passed to the container in `run-in-docker.sh`.
+    """
+
+    #
+    # Environment variables
+    #
+
+    DEVICE_PASSWORD = environ.get("DEVICE_PASSWORD")
+    DEVICE_USERNAME = environ.get("DEVICE_USERNAME", "nautobot")
+    LOGLEVEL = environ.get("LOGLEVEL", "INFO")
+    NAUTOBOT_TOKEN = environ.get("NAUTOBOT_TOKEN")
+    NAUTOBOT_URL = environ.get("NAUTOBOT_URL", "https://nautobot.example.com")
+
+    #
+    # Hardcoded settings
+    #
+
+    # https://docs.gitlab.com/ee/ci/triggers/#use-a-webhook-payload
+    WEBHOOK_PAYLOAD_VAR = "TRIGGER_PAYLOAD"

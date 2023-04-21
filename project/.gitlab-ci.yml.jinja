@@ -1,0 +1,71 @@
+---
+stages:
+  - lint
+  - build
+  - run
+
+lint-job:
+  stage: lint
+  image: python:{{ python_version }}
+  rules:
+    - if: >-
+        '$CI_COMMIT_BRANCH == "main" 
+        && 
+        ($CI_PIPELINE_SOURCE == "push" 
+        || $CI_PIPELINE_SOURCE == "merge_request_event" 
+        || $CI_PIPELINE_SOURCE == "web")'
+      changes:
+        - src/**/*
+        - pyproject.toml
+  tags:
+    - docker
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
+  script:
+    - invoke codestyle
+
+build-docker-image:
+  stage: build
+  image: docker:20.10.22
+  services:
+    - docker:dind
+  rules:
+    - if: >-
+        '$CI_COMMIT_BRANCH == "main" 
+        && 
+        ($CI_PIPELINE_SOURCE == "push" 
+        || $CI_PIPELINE_SOURCE == "merge_request_event" 
+        || $CI_PIPELINE_SOURCE == "web")'
+      changes:
+        - src/**/*
+        - docker/*
+  tags:
+    - docker
+  before_script:
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USER" $DOCKER_REGISTRY_URL --password-stdin
+  script:
+    - export IMAGE_NAME="$DOCKER_REGISTRY_URL/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+    - docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" -t "$IMAGE_NAME:latest" -f docker/Dockerfile .
+    - docker push --all-tags $IMAGE_NAME
+  after_script:
+    - docker logout $DOCKER_REGISTRY_URL
+
+run-job:
+  stage: run
+  variables:
+    # https://stackoverflow.com/questions/56663096/gitlab-runner-doesnt-work-on-a-specific-project
+    GIT_STRATEGY: clone
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+  tags:
+    - shell
+  before_script:
+    - echo "$DOCKER_REGISTRY_RO_PASSWORD" | docker login -u "$DOCKER_REGISTRY_RO_USER" $DOCKER_REGISTRY_URL --password-stdin
+    - docker pull $DOCKER_REGISTRY_URL/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  script:
+    # Change "run" to actual command you want to run
+    - ./run-in-docker.sh run
+  after_script:
+    - docker logout $DOCKER_REGISTRY_URL
