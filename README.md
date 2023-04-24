@@ -4,7 +4,7 @@
 
 Opinionated [Copier](https://github.com/copier-org/copier) template for Python network automation projects.
 
-Blog post: [https://dteslya.engineer/blog/2023/04/15/network-automation-python-project-template/](http://127.0.0.1:8000/blog/2023/04/15/network-automation-python-project-template/)
+Blog post: [https://dteslya.engineer/blog/2023/04/24/network-automation-python-project-template/](http://dteslya.engineer/blog/2023/04/24/network-automation-python-project-template/)
 
 ## Requirements
 
@@ -30,10 +30,10 @@ Blog post: [https://dteslya.engineer/blog/2023/04/15/network-automation-python-p
     copier gh:dteslya/network-automation-template /path/to/your/new/project
     ```
 
-3. Cd to the project directory to install dependencies and pre-commit hooks
+3. Cd to the project directory to initialize git, install dependencies and pre-commit hooks
 
     ```shell
-    cd /path/to/your/new/project && invoke install && invoke pre-commit-install
+    cd /path/to/your/new/project && git init && invoke install && invoke pre-commit-install
     ```
 
 4. Start coding!
