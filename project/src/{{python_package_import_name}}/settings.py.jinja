@@ -12,13 +12,13 @@ class Settings(BaseSettings):
     """
 
     #
-    # Environment variables
+    # Environment variables (never hardcode secrets in code, I did it only for demo purposes)
     #
 
-    DEVICE_PASSWORD = environ.get("DEVICE_PASSWORD")
+    DEVICE_PASSWORD = environ.get("DEVICE_PASSWORD", "supersecret")
     DEVICE_USERNAME = environ.get("DEVICE_USERNAME", "nautobot")
     LOGLEVEL = environ.get("LOGLEVEL", "INFO")
-    NAUTOBOT_TOKEN = environ.get("NAUTOBOT_TOKEN")
+    NAUTOBOT_TOKEN = environ.get("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
     NAUTOBOT_URL = environ.get("NAUTOBOT_URL", "https://nautobot.example.com")
 
     #
