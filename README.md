@@ -30,10 +30,10 @@ Blog post: [https://dteslya.engineer/blog/2023/04/15/network-automation-python-p
     copier gh:dteslya/network-automation-template /path/to/your/new/project
     ```
 
-3. Cd to the project directory and install dependencies
+3. Cd to the project directory to install dependencies and pre-commit hooks
 
     ```shell
-    cd /path/to/your/new/project && invoke install
+    cd /path/to/your/new/project && invoke install && invoke pre-commit-install
     ```
 
 4. Start coding!
