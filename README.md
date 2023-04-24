@@ -4,7 +4,7 @@
 
 Opinionated [Copier](https://github.com/copier-org/copier) template for Python network automation projects.
 
-Blog post: [https://dteslya.engineer/blog/2023/04/24/network-automation-python-project-template/](http://dteslya.engineer/blog/2023/04/24/network-automation-python-project-template/)
+Blog post: [https://dteslya.engineer/blog/2023/04/24/building-a-template-for-a-network-automation-project/](https://dteslya.engineer/blog/2023/04/24/building-a-template-for-a-network-automation-project/)
 
 ## Requirements
 
