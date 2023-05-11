@@ -8,12 +8,7 @@ lint-job:
   stage: lint
   image: python:{{ python_version }}
   rules:
-    - if: >-
-        '$CI_COMMIT_BRANCH == "main" 
-        && 
-        ($CI_PIPELINE_SOURCE == "push" 
-        || $CI_PIPELINE_SOURCE == "merge_request_event" 
-        || $CI_PIPELINE_SOURCE == "web")'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "web")'
       changes:
         - src/**/*
         - pyproject.toml
@@ -32,12 +27,7 @@ build-docker-image:
   services:
     - docker:dind
   rules:
-    - if: >-
-        '$CI_COMMIT_BRANCH == "main" 
-        && 
-        ($CI_PIPELINE_SOURCE == "push" 
-        || $CI_PIPELINE_SOURCE == "merge_request_event" 
-        || $CI_PIPELINE_SOURCE == "web")'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "web")'
       changes:
         - src/**/*
         - docker/*
