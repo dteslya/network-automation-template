@@ -1,3 +1,10 @@
+## v0.1.3 (2023-05-17)
+
+### Fix
+
+- **pyproject.toml**: set major_version_zero option to true
+- **pyproject.toml**: change initial package version to 0.0.1
+
 ## v0.1.2 (2023-05-11)
 
 ### Fix
