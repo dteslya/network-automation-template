@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "{{ python_package_distribution_name }}"
-version = "0.1.0"
+version = "0.0.1"
 description = "{{ project_description }}"
 authors = ["{{ author_fullname }} <{{ author_email }}>"]
 license = "{{ copyright_license }}"
@@ -86,5 +86,5 @@ tag_format = "$version"
 update_changelog_on_bump = true
 # Make sure that the version here and in [tool.poetry] section are the same before bumping.
 # Otherwise, bump will update only the version here.
-version = "0.1.0"
+version = "0.0.1"
 version_files = ["pyproject.toml:^version"]
