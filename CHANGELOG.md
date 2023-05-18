@@ -1,3 +1,9 @@
+## v0.2.0 (2023-05-18)
+
+### Feat
+
+- **gitlab-ci**: add version-bump stage
+
 ## v0.1.3 (2023-05-17)
 
 ### Fix
