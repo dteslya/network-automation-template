@@ -1,3 +1,9 @@
+## v0.2.1 (2023-05-18)
+
+### Refactor
+
+- **gitlab-ci.yml**: use predefined gitlab vars in remote url
+
 ## v0.2.0 (2023-05-18)
 
 ### Feat
