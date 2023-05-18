@@ -34,7 +34,7 @@ version-bump:
   script:
     - git config user.email $CI_EMAIL && git config user.name $CI_USERNAME
     - git config http.sslVerify false # disable ssl verification
-    - git remote rm origin && git remote add origin https://oauth2:$PROJECT_ACCESS_TOKEN@{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}.git
+    - git remote rm origin && git remote add origin https://oauth2:$PROJECT_ACCESS_TOKEN@{{ gitlab_url }}/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git
     - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
     - cz bump --yes # execute auto bump and push to main
     - git push --follow-tags origin $CI_COMMIT_BRANCH:$CI_COMMIT_BRANCH
