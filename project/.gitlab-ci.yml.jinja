@@ -1,6 +1,7 @@
 ---
 stages:
   - lint
+  - version-bump
   - build
   - run
 
@@ -21,6 +22,27 @@ lint-job:
   script:
     - invoke codestyle
 
+version-bump:
+  stage: version-bump
+  image: python:3.11
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $GITLAB_USER_LOGIN != $CI_USERNAME && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+  before_script:
+    - pip3 install -U commitizen
+  script:
+    - git config user.email $CI_EMAIL && git config user.name $CI_USERNAME
+    - git config http.sslVerify false # disable ssl verification
+    - git remote rm origin && git remote add origin https://oauth2:$PROJECT_ACCESS_TOKEN@{{ gitlab_url }}/{{ repository_namespace }}/{{ project_name }}.git
+    - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
+    - cz bump --yes # execute auto bump and push to main
+    - git push --follow-tags origin $CI_COMMIT_BRANCH:$CI_COMMIT_BRANCH
+    - cz version -p > version # get the new software version and save into artifacts
+  artifacts:
+    paths:
+      - version
+
 build-docker-image:
   stage: build
   image: docker:20.10.22
@@ -34,10 +56,11 @@ build-docker-image:
   tags:
     - docker
   before_script:
+    - '[ -f ./version ] && export VERSION=$(cat ./version)'
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USER" $DOCKER_REGISTRY_URL --password-stdin
   script:
     - export IMAGE_NAME="$DOCKER_REGISTRY_URL/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
-    - docker build -t "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" -t "$IMAGE_NAME:latest" -f docker/Dockerfile .
+    - docker build -t "$IMAGE_NAME:$VERSION" -t "$IMAGE_NAME:latest" -f docker/Dockerfile .
     - docker push --all-tags $IMAGE_NAME
   after_script:
     - docker logout $DOCKER_REGISTRY_URL
